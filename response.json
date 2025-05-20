@@ -1,0 +1,160 @@
+{
+  "lists": [
+    {
+      "id": "901312102896",
+      "name": "ListName",
+      "orderindex": 0,
+      "content": "",
+      "status": null,
+      "priority": null,
+      "assignee": null,
+      "task_count": 0,
+      "due_date": null,
+      "start_date": null,
+      "folder": {
+        "id": "90137350984",
+        "name": "alarm-folder",
+        "hidden": false,
+        "access": true
+      },
+      "space": {
+        "id": "90135615103",
+        "name": "interface-space",
+        "access": true
+      },
+      "archived": false,
+      "override_statuses": false,
+      "permission_level": "create"
+    },
+    {
+      "id": "901312103248",
+      "name": "markets-list",
+      "orderindex": 1,
+      "content": "",
+      "status": null,
+      "priority": null,
+      "assignee": null,
+      "task_count": 0,
+      "due_date": null,
+      "start_date": null,
+      "folder": {
+        "id": "90137350984",
+        "name": "alarm-folder",
+        "hidden": false,
+        "access": true
+      },
+      "space": {
+        "id": "90135615103",
+        "name": "interface-space",
+        "access": true
+      },
+      "archived": false,
+      "override_statuses": false,
+      "permission_level": "create"
+    },
+    {
+      "id": "901312103254",
+      "name": "vortals-list",
+      "orderindex": 2,
+      "content": "",
+      "status": null,
+      "priority": null,
+      "assignee": null,
+      "task_count": 0,
+      "due_date": null,
+      "start_date": null,
+      "folder": {
+        "id": "90137350984",
+        "name": "alarm-folder",
+        "hidden": false,
+        "access": true
+      },
+      "space": {
+        "id": "90135615103",
+        "name": "interface-space",
+        "access": true
+      },
+      "archived": false,
+      "override_statuses": false,
+      "permission_level": "create"
+    },
+    {
+      "id": "901312110093",
+      "name": "infrastructures-list",
+      "orderindex": 3,
+      "content": "",
+      "status": null,
+      "priority": null,
+      "assignee": null,
+      "task_count": 0,
+      "due_date": null,
+      "start_date": null,
+      "folder": {
+        "id": "90137350984",
+        "name": "alarm-folder",
+        "hidden": false,
+        "access": true
+      },
+      "space": {
+        "id": "90135615103",
+        "name": "interface-space",
+        "access": true
+      },
+      "archived": false,
+      "override_statuses": false,
+      "permission_level": "create"
+    },
+    {
+      "id": "901312110103",
+      "name": "niches-list",
+      "orderindex": 4,
+      "content": "",
+      "status": null,
+      "priority": null,
+      "assignee": null,
+      "task_count": 0,
+      "due_date": null,
+      "start_date": null,
+      "folder": {
+        "id": "90137350984",
+        "name": "alarm-folder",
+        "hidden": false,
+        "access": true
+      },
+      "space": {
+        "id": "90135615103",
+        "name": "interface-space",
+        "access": true
+      },
+      "archived": false,
+      "override_statuses": false,
+      "permission_level": "create"
+    },
+    {
+      "id": "901312111405",
+      "name": "eyeballs-list",
+      "orderindex": 5,
+      "content": "",
+      "status": null,
+      "priority": null,
+      "assignee": null,
+      "task_count": 0,
+      "due_date": null,
+      "start_date": null,
+      "folder": {
+        "id": "90137350984",
+        "name": "alarm-folder",
+        "hidden": false,
+        "access": true
+      },
+      "space": {
+        "id": "90135615103",
+        "name": "interface-space",
+        "access": true
+      },
+      "archived": false,
+      "override_statuses": false,
+      "permission_level": "create"
+    }
+  ]
+}
