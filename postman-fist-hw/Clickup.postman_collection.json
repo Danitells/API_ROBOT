@@ -1,0 +1,477 @@
+{
+	"info": {
+		"_postman_id": "a689e6dd-5335-4807-907a-d42db451d9db",
+		"name": "Clickup",
+		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json",
+		"_exporter_id": "11373123"
+	},
+	"item": [
+		{
+			"name": "Lists CRUD",
+			"item": [
+				{
+					"name": "CreateListOne",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"const responseBody = pm.response.json();",
+									"const requestBody = JSON.parse(pm.request.body.raw);",
+									"const expectedName = requestBody.name;",
+									"",
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test(\"Response contains expected name\", function () {",
+									"    pm.expect(responseBody.name).to.eql(expectedName);",
+									"});",
+									"",
+									"pm.collectionVariables.set(\"first_created_list_id\", responseBody.id);"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "accept",
+								"value": "application/json"
+							},
+							{
+								"key": "content-type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\"name\":\"{{$randomBsNoun}}-{{$randomAdjective}}-list\"}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{url}}/api/v2/folder/{{folderId}}/list"
+					},
+					"response": []
+				},
+				{
+					"name": "CreateListTwo",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"const responseBody = pm.response.json();",
+									"const requestBody = JSON.parse(pm.request.body.raw);",
+									"const expectedName = requestBody.name;",
+									"",
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test(\"Response contains expected name\", function () {",
+									"    pm.expect(responseBody.name).to.eql(expectedName);",
+									"});",
+									"",
+									"pm.collectionVariables.set(\"second_created_list_id\", responseBody.id);"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\"name\":\"{{$randomBsNoun}}-{{$randomAdjective}}-list\"}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{url}}/api/v2/folder/{{folderId}}/list"
+					},
+					"response": []
+				},
+				{
+					"name": "GetLists",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"const first_list_id = pm.collectionVariables.get(\"first_created_list_id\");",
+									"const second_list_id = pm.collectionVariables.get(\"second_created_list_id\");",
+									"const responseBody = pm.response.json();",
+									"",
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test(\"Response contains newly created lists\", function () {",
+									"    pm.expect(JSON.stringify(responseBody)).to.include(first_list_id);",
+									"    pm.expect(JSON.stringify(responseBody)).to.include(second_list_id);",
+									"});",
+									"",
+									"pm.test(\"Check if all of the list names are unique\", function () {",
+									"    let namesArr = [];",
+									"    for (let list of responseBody.lists) {",
+									"        namesArr.push(list.name);",
+									"    }",
+									"    const set = new Set(namesArr);",
+									"    pm.collectionVariables.set(\"list_length\",namesArr.length );",
+									"    pm.expect(set.size).to.eql(namesArr.length);",
+									"",
+									"});",
+									"",
+									"",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "pk_138202176_7LQLXBKL20YS3QPTUVC10WVZACL48VHZ",
+								"type": "text"
+							}
+						],
+						"url": "{{url}}/api/v2/folder/{{folderId}}/list"
+					},
+					"response": []
+				},
+				{
+					"name": "GetListsWithoutAuthorization",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"const expectedResponseBody = {",
+									"    \"err\": \"Authorization header required\",",
+									"    \"ECODE\": \"OAUTH_017\"",
+									"}",
+									"pm.test(\"Body is correct\", function () {",
+									"    pm.response.to.have.body(expectedResponseBody);",
+									"});",
+									"",
+									"pm.test(\"Status code is 400\", function () {",
+									"    pm.response.to.have.status(400)",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "GET",
+						"header": [],
+						"url": "{{url}}/api/v2/folder/{{folderId}}/list"
+					},
+					"response": []
+				},
+				{
+					"name": "GetListOne",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"const response = pm.response.json();",
+									"",
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test(\"Check top-level properties type\", function () {",
+									"    pm.expect(response).to.have.property(\"id\").that.is.a(\"string\");",
+									"    pm.expect(response).to.have.property(\"name\").that.is.a(\"string\");",
+									"    pm.expect(response).to.have.property(\"deleted\").that.is.a(\"boolean\");",
+									"    pm.expect(response).to.have.property(\"orderindex\").that.is.a(\"number\");",
+									"    pm.expect(response).to.have.property(\"archived\").that.is.a(\"boolean\");",
+									"    pm.expect(response).to.have.property(\"override_statuses\").that.is.a(\"boolean\");",
+									"    pm.expect(response).to.have.property(\"permission_level\").that.is.a(\"string\");",
+									"});",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "accept",
+								"value": "application/json"
+							}
+						],
+						"url": "{{url}}/api/v2/list/{{first_created_list_id}}"
+					},
+					"response": []
+				},
+				{
+					"name": "UpdateListOne",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"const responseBody = pm.response.json();",
+									"const requestBody = JSON.parse(pm.request.body.raw);",
+									"const expectedName = requestBody.name;",
+									"",
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test(\"Response contains expected name\", function () {",
+									"    pm.expect(responseBody.name).to.eql(expectedName);",
+									"});",
+									"",
+									"pm.collectionVariables.set(\"updated_list_one_name\", responseBody.name);",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "pk_138202176_2SJ1325IBAPGOENXMBLLOJDV51O1TGP1"
+							},
+							{
+								"key": "accept",
+								"value": "application/json"
+							},
+							{
+								"key": "content-type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\n    \"name\":\"{{$randomBsNoun}}-{{$randomAdjective}}-list\",\n    \"deleted\": false,\n    \"orderindex\": 30,\n    \"content\": \"\",\n    \"priority\": null,\n    \"assignee\": null,\n    \"task_count\": 0,\n    \"due_date\": null,\n    \"start_date\": null,\n    \"folder\": {\n        \"id\": \"90137350984\",\n        \"name\": \"alarm-folder\",\n        \"hidden\": false,\n        \"access\": true\n    },\n    \"space\": {\n        \"id\": \"90135615103\",\n        \"name\": \"interface-space\",\n        \"access\": true\n    },\n    \"inbound_address\": \"a.t.901312754112.u-138202176.01c28659-2abe-494a-b968-b4d71d1545b9@tasks.clickup.com\",\n    \"archived\": false,\n    \"override_statuses\": false,\n    \"statuses\": [\n        {\n            \"id\": \"p90135615103_rtdDqlDJ\",\n            \"status\": \"to do\",\n            \"orderindex\": 0,\n            \"color\": \"#87909e\",\n            \"type\": \"open\",\n            \"status_group\": \"proj_90135615103\"\n        },\n        {\n            \"id\": \"p90135615103_tyTqMd0c\",\n            \"status\": \"complete\",\n            \"orderindex\": 1,\n            \"color\": \"#008844\",\n            \"type\": \"closed\",\n            \"status_group\": \"proj_90135615103\"\n        }\n    ],\n    \"permission_level\": \"create\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{url}}/api/v2/list/{{first_created_list_id}}"
+					},
+					"response": []
+				},
+				{
+					"name": "GetListOneWithUpdatedName",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"const response = pm.response.json();",
+									"const updatedName = pm.collectionVariables.get(\"updated_list_one_name\");",
+									"",
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test(\"List has updated name\", function () {",
+									"    pm.expect(response).to.have.property(\"name\", updatedName);",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "accept",
+								"value": "application/json"
+							}
+						],
+						"url": "{{url}}/api/v2/list/{{first_created_list_id}}"
+					},
+					"response": []
+				},
+				{
+					"name": "DeleteListOne",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "pk_138202176_2SJ1325IBAPGOENXMBLLOJDV51O1TGP1"
+							},
+							{
+								"key": "accept",
+								"value": "application/json"
+							}
+						],
+						"url": "{{url}}/api/v2/list/{{first_created_list_id}}"
+					},
+					"response": []
+				},
+				{
+					"name": "GetListsAfterDeletingListOne",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"const first_list_id = pm.collectionVariables.get(\"first_created_list_id\");",
+									"const responseBody = pm.response.json();",
+									"const listBeforeDeletingLength = parseInt(pm.collectionVariables.get(\"list_length\"), 10);",
+									"",
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test(\"Response no longer contains the deleted list ID\", function () {",
+									"    const listIds = responseBody.lists.map(list => list.id);",
+									"    pm.expect(listIds).to.not.include(first_list_id);",
+									"});",
+									"",
+									"pm.test(\"Only one list was deleted\", function () {",
+									"    const currentListLength = responseBody.lists.length;",
+									"    pm.expect(currentListLength).to.eql(listBeforeDeletingLength - 1);",
+									"});",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "pk_138202176_7LQLXBKL20YS3QPTUVC10WVZACL48VHZ",
+								"type": "text"
+							}
+						],
+						"url": "{{url}}/api/v2/folder/{{folderId}}/list"
+					},
+					"response": []
+				}
+			]
+		}
+	],
+	"auth": {
+		"type": "apikey",
+		"apikey": {
+			"key": "Authorization",
+			"value": "pk_138202176_2SJ1325IBAPGOENXMBLLOJDV51O1TGP1"
+		}
+	},
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "id",
+			"value": ""
+		},
+		{
+			"key": "folderId",
+			"value": ""
+		},
+		{
+			"key": "first_created_list_id",
+			"value": ""
+		},
+		{
+			"key": "second_created_list_id",
+			"value": ""
+		},
+		{
+			"key": "updated_list_one_name",
+			"value": ""
+		},
+		{
+			"key": "list_length",
+			"value": ""
+		}
+	]
+}
