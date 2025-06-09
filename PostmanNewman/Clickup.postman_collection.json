@@ -1,0 +1,544 @@
+{
+	"info": {
+		"_postman_id": "a689e6dd-5335-4807-907a-d42db451d9db",
+		"name": "Clickup",
+		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json",
+		"_exporter_id": "11373123"
+	},
+	"item": [
+		{
+			"name": "SchemaValidation",
+			"item": [
+				{
+					"name": "CreateListOne Copy",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var Ajv = require('ajv');",
+									"var ajv = new Ajv({ allErrors: true });",
+									"",
+									"var schema = {",
+									"  \"type\": \"object\",",
+									"  \"properties\": {",
+									"    \"id\": { \"type\": \"string\" },",
+									"    \"name\": { \"type\": \"string\" },",
+									"    \"deleted\": { \"type\": \"boolean\" },",
+									"    \"orderindex\": { \"type\": \"integer\" },",
+									"    \"content\": { \"type\": \"string\" },",
+									"    \"priority\": { \"type\": [\"null\", \"object\"] },",
+									"    \"assignee\": { \"type\": [\"null\", \"object\"] },",
+									"    \"task_count\": { \"type\": \"integer\" },",
+									"    \"due_date\": { \"type\": [\"null\", \"string\"] },",
+									"    \"start_date\": { \"type\": [\"null\", \"string\"] },",
+									"    \"folder\": {",
+									"      \"type\": \"object\",",
+									"      \"properties\": {",
+									"        \"id\": { \"type\": \"string\" },",
+									"        \"name\": { \"type\": \"string\" },",
+									"        \"hidden\": { \"type\": \"boolean\" },",
+									"        \"access\": { \"type\": \"boolean\" }",
+									"      },",
+									"      \"required\": [\"id\", \"name\", \"hidden\", \"access\"]",
+									"    },",
+									"    \"space\": {",
+									"      \"type\": \"object\",",
+									"      \"properties\": {",
+									"        \"id\": { \"type\": \"string\" },",
+									"        \"name\": { \"type\": \"string\" },",
+									"        \"access\": { \"type\": \"boolean\" }",
+									"      },",
+									"      \"required\": [\"id\", \"name\", \"access\"]",
+									"    },",
+									"    \"inbound_address\": { \"type\": \"string\" },",
+									"    \"archived\": { \"type\": \"boolean\" },",
+									"    \"override_statuses\": { \"type\": \"boolean\" },",
+									"    \"statuses\": {",
+									"      \"type\": \"array\",",
+									"      \"items\": {",
+									"        \"type\": \"object\",",
+									"        \"properties\": {",
+									"          \"id\": { \"type\": \"string\" },",
+									"          \"status\": { \"type\": \"string\" },",
+									"          \"orderindex\": { \"type\": \"integer\" },",
+									"          \"color\": { \"type\": \"string\" },",
+									"          \"type\": { \"type\": \"string\" },",
+									"          \"status_group\": { \"type\": \"string\" }",
+									"        },",
+									"        \"required\": [\"id\", \"status\", \"orderindex\", \"color\", \"type\", \"status_group\"]",
+									"      }",
+									"    },",
+									"    \"permission_level\": { \"type\": \"string\" }",
+									"  },",
+									"  \"required\": [",
+									"    \"id\",",
+									"    \"name\",",
+									"    \"deleted\",",
+									"    \"orderindex\",",
+									"    \"content\",",
+									"    \"priority\",",
+									"    \"assignee\",",
+									"    \"task_count\",",
+									"    \"due_date\",",
+									"    \"start_date\",",
+									"    \"folder\",",
+									"    \"space\",",
+									"    \"inbound_address\",",
+									"    \"archived\",",
+									"    \"override_statuses\",",
+									"    \"statuses\",",
+									"    \"permission_level\"",
+									"  ]",
+									"}",
+									"",
+									"pm.test(\"Response matches schema\", function () {",
+									"  pm.expect(ajv.validate(pm.response.json(), schema)).to.be.true;",
+									"});",
+									"pm.collectionVariables.set(\"first_created_list_id_schema\", responseBody.id);"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "accept",
+								"value": "application/json"
+							},
+							{
+								"key": "content-type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\"name\":\"{{$randomBsNoun}}-{{$randomAdjective}}-list\"}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{url}}/api/v2/folder/{{folderId}}/list"
+					},
+					"response": []
+				},
+				{
+					"name": "GetSpaces",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Response matches schema\", () => {",
+									"  pm.response.to.have.jsonSchema({",
+									"    type: \"object\",",
+									"    properties: {",
+									"      spaces: {",
+									"        type: \"array\",",
+									"        items: {",
+									"          type: \"object\",",
+									"          properties: {",
+									"            id: { type: \"string\" },",
+									"            name: { type: \"string\" },",
+									"            color: { type: [\"null\", \"string\"] },",
+									"            private: { type: \"boolean\" },",
+									"            avatar: { type: [\"null\", \"string\"] },",
+									"            admin_can_manage: { type: [\"null\", \"boolean\"] },",
+									"            statuses: {",
+									"              type: \"array\",",
+									"              items: {",
+									"                type: \"object\",",
+									"                properties: {",
+									"                  id: { type: \"string\" },",
+									"                  status: { type: \"string\" },",
+									"                  type: { type: \"string\" },",
+									"                  orderindex: { type: \"integer\" },",
+									"                  color: { type: \"string\" }",
+									"                },",
+									"                required: [\"id\", \"status\", \"type\", \"orderindex\", \"color\"]",
+									"              }",
+									"            },",
+									"            multiple_assignees: { type: \"boolean\" },",
+									"            features: {",
+									"              type: \"object\",",
+									"              properties: {",
+									"                due_dates: {",
+									"                  type: \"object\",",
+									"                  properties: {",
+									"                    enabled: { type: \"boolean\" },",
+									"                    start_date: { type: \"boolean\" },",
+									"                    remap_due_dates: { type: \"boolean\" },",
+									"                    remap_closed_due_date: { type: \"boolean\" }",
+									"                  },",
+									"                  required: [\"enabled\", \"start_date\", \"remap_due_dates\", \"remap_closed_due_date\"]",
+									"                },",
+									"                sprints: {",
+									"                  type: \"object\",",
+									"                  properties: {",
+									"                    enabled: { type: \"boolean\" }",
+									"                  },",
+									"                  required: [\"enabled\"]",
+									"                },",
+									"                time_tracking: {",
+									"                  type: \"object\",",
+									"                  properties: {",
+									"                    enabled: { type: \"boolean\" },",
+									"                    harvest: { type: \"boolean\" },",
+									"                    rollup: { type: \"boolean\" },",
+									"                    default_to_billable: { type: \"integer\" }",
+									"                  },",
+									"                  required: [\"enabled\", \"harvest\", \"rollup\", \"default_to_billable\"]",
+									"                },",
+									"                points: {",
+									"                  type: \"object\",",
+									"                  properties: {",
+									"                    enabled: { type: \"boolean\" }",
+									"                  },",
+									"                  required: [\"enabled\"]",
+									"                },",
+									"                custom_items: {",
+									"                  type: \"object\",",
+									"                  properties: {",
+									"                    enabled: { type: \"boolean\" }",
+									"                  },",
+									"                  required: [\"enabled\"]",
+									"                },",
+									"                tags: {",
+									"                  type: \"object\",",
+									"                  properties: {",
+									"                    enabled: { type: \"boolean\" }",
+									"                  },",
+									"                  required: [\"enabled\"]",
+									"                },",
+									"                time_estimates: {",
+									"                  type: \"object\",",
+									"                  properties: {",
+									"                    enabled: { type: \"boolean\" },",
+									"                    rollup: { type: \"boolean\" },",
+									"                    per_assignee: { type: \"boolean\" }",
+									"                  },",
+									"                  required: [\"enabled\", \"rollup\", \"per_assignee\"]",
+									"                },",
+									"                checklists: {",
+									"                  type: \"object\",",
+									"                  properties: {",
+									"                    enabled: { type: \"boolean\" }",
+									"                  },",
+									"                  required: [\"enabled\"]",
+									"                },",
+									"                milestones: {",
+									"                  type: \"object\",",
+									"                  properties: {",
+									"                    enabled: { type: \"boolean\" }",
+									"                  },",
+									"                  required: [\"enabled\"]",
+									"                },",
+									"                custom_fields: {",
+									"                  type: \"object\",",
+									"                  properties: {",
+									"                    enabled: { type: \"boolean\" }",
+									"                  },",
+									"                  required: [\"enabled\"]",
+									"                },",
+									"                remap_dependencies: {",
+									"                  type: \"object\",",
+									"                  properties: {",
+									"                    enabled: { type: \"boolean\" }",
+									"                  },",
+									"                  required: [\"enabled\"]",
+									"                },",
+									"                dependency_warning: {",
+									"                  type: \"object\",",
+									"                  properties: {",
+									"                    enabled: { type: \"boolean\" }",
+									"                  },",
+									"                  required: [\"enabled\"]",
+									"                },",
+									"                status_pies: {",
+									"                  type: \"object\",",
+									"                  properties: {",
+									"                    enabled: { type: \"boolean\" }",
+									"                  },",
+									"                  required: [\"enabled\"]",
+									"                },",
+									"                multiple_assignees: {",
+									"                  type: \"object\",",
+									"                  properties: {",
+									"                    enabled: { type: \"boolean\" }",
+									"                  },",
+									"                  required: [\"enabled\"]",
+									"                },",
+									"                portfolios: {",
+									"                  type: \"object\",",
+									"                  properties: {",
+									"                    enabled: { type: \"boolean\" }",
+									"                  },",
+									"                  required: [\"enabled\"]",
+									"                },",
+									"                emails: {",
+									"                  type: \"object\",",
+									"                  properties: {",
+									"                    enabled: { type: \"boolean\" }",
+									"                  },",
+									"                  required: [\"enabled\"]",
+									"                },",
+									"                scheduler_enabled: { type: \"boolean\" }",
+									"              },",
+									"              required: [",
+									"                \"due_dates\",",
+									"                \"sprints\",",
+									"                \"time_tracking\",",
+									"                \"points\",",
+									"                \"custom_items\",",
+									"                \"tags\",",
+									"                \"time_estimates\",",
+									"                \"checklists\",",
+									"                \"milestones\",",
+									"                \"custom_fields\",",
+									"                \"remap_dependencies\",",
+									"                \"dependency_warning\",",
+									"                \"status_pies\",",
+									"                \"multiple_assignees\",",
+									"                \"portfolios\",",
+									"                \"emails\",",
+									"                \"scheduler_enabled\"",
+									"              ]",
+									"            },",
+									"            archived: { type: \"boolean\" }",
+									"          },",
+									"          required: [",
+									"            \"id\",",
+									"            \"name\",",
+									"            \"color\",",
+									"            \"private\",",
+									"            \"avatar\",",
+									"            \"admin_can_manage\",",
+									"            \"statuses\",",
+									"            \"multiple_assignees\",",
+									"            \"features\",",
+									"            \"archived\"",
+									"          ]",
+									"        }",
+									"      }",
+									"    },",
+									"    required: [\"spaces\"]",
+									"  });",
+									"});",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "pk_138202176_2SJ1325IBAPGOENXMBLLOJDV51O1TGP1"
+							},
+							{
+								"key": "accept",
+								"value": "application/json"
+							}
+						],
+						"url": "https://api.clickup.com/api/v2/team/90131286738/space"
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "ID_console_log",
+			"item": [
+				{
+					"name": "PrintAllIdsWithPreAndPostScripts",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"const url = pm.environment.get(\"url\");",
+									"const folderId = pm.collectionVariables.get(\"folderId\");",
+									"const randomSuffix = Math.floor(Math.random() * 10000);",
+									"const randomName = `BlaBla-${randomSuffix}`;",
+									"",
+									"",
+									"var request = {",
+									"  url: `${url}/api/v2/folder/${folderId}/list`,",
+									"  method: 'POST',",
+									"  header: {",
+									"    'accept': 'application/json',",
+									"    'content-type': 'application/json',",
+									"    'Authorization': 'pk_138202176_2SJ1325IBAPGOENXMBLLOJDV51O1TGP1'",
+									"  },",
+									"  body: {",
+									"    mode: 'raw',",
+									"    raw: JSON.stringify({",
+									"      name:randomName",
+									"    })",
+									"  }",
+									"};",
+									"",
+									"pm.sendRequest(request, function (err, res) {",
+									"  if (err) {",
+									"    console.error(err);",
+									"  } else {",
+									"    const jsonResponse = res.json();",
+									"    const listId = jsonResponse.id; ",
+									"",
+									"    console.log(\"Created list ID:\", listId);",
+									"",
+									"",
+									"    pm.collectionVariables.set(\"listIdFromPreScriptId\", listId);",
+									"  }",
+									"});",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var listFromPreScriptId = pm.collectionVariables.get(\"listIdFromPreScriptId\");",
+									"var responseBody = pm.response.json();",
+									"let idsArr = [];",
+									"for (let list of responseBody.lists) {",
+									"    idsArr.push(list.id);",
+									"    }",
+									"console.log(idsArr)",
+									"",
+									"pm.test(\"Response contains newly created lists\", function () {",
+									"    pm.expect(JSON.stringify(responseBody)).to.include(listFromPreScriptId);",
+									"});",
+									"",
+									"const url = pm.environment.get(\"url\");",
+									"const folderId = pm.collectionVariables.get(\"folderId\");",
+									"",
+									"",
+									"var request = {",
+									"  url: `${url}/api/v2/list/${listFromPreScriptId}`,",
+									"  method: 'DELETE',",
+									"  header: {",
+									"    'accept': 'application/json',",
+									"    'content-type': 'application/json',",
+									"    'Authorization': 'pk_138202176_2SJ1325IBAPGOENXMBLLOJDV51O1TGP1'",
+									"  },",
+									"  body: {",
+									"    mode: 'raw',",
+									"    raw: JSON.stringify({",
+									"      id:listFromPreScriptId",
+									"    })",
+									"  }",
+									"};",
+									"",
+									"pm.sendRequest(request, function (err, res) {",
+									"  if (err) {",
+									"    console.error(err);",
+									"  } else {",
+									"    var jsonResponse = res.json();",
+									"    console.log(jsonResponse)",
+									"",
+									"  }",
+									"});",
+									"",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "pk_138202176_7LQLXBKL20YS3QPTUVC10WVZACL48VHZ",
+								"type": "text"
+							}
+						],
+						"url": "{{url}}/api/v2/folder/{{folderId}}/list"
+					},
+					"response": []
+				}
+			]
+		}
+	],
+	"auth": {
+		"type": "apikey",
+		"apikey": {
+			"key": "Authorization",
+			"value": "pk_138202176_2SJ1325IBAPGOENXMBLLOJDV51O1TGP1"
+		}
+	},
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "id",
+			"value": ""
+		},
+		{
+			"key": "folderId",
+			"value": ""
+		},
+		{
+			"key": "first_created_list_id",
+			"value": ""
+		},
+		{
+			"key": "second_created_list_id",
+			"value": ""
+		},
+		{
+			"key": "updated_list_one_name",
+			"value": ""
+		},
+		{
+			"key": "list_length",
+			"value": ""
+		},
+		{
+			"key": "first_created_list_id_schema",
+			"value": ""
+		},
+		{
+			"key": "listIdFromPreScript",
+			"value": ""
+		},
+		{
+			"key": "listIdFromPreScriptId",
+			"value": ""
+		}
+	]
+}
