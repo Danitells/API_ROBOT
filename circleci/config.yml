@@ -1,0 +1,36 @@
+version: 2.1
+
+executors:
+  node-executor:
+    docker:
+      - image: cimg/node:20.5.0
+    working_directory: ~/project
+
+jobs:
+  run-postman-tests:
+    executor: node-executor
+    steps:
+      - checkout
+
+      - run:
+          name: Install Newman
+          command: npm install -g newman
+
+      - run:
+          name: Run Postman Collection
+          command: |
+            newman run PostmanNewman/Clickup.postman_collection.json \
+              --environment PostmanNewman/Dev.postman_environment.json \
+              --reporters cli,junit \
+              --reporter-junit-export results/newman-results.xml
+
+      - store_test_results:
+          path: results
+      - store_artifacts:
+          path: results
+
+workflows:
+  version: 2
+  test-workflow:
+    jobs:
+      - run-postman-tests
